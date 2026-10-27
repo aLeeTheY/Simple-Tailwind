@@ -1,0 +1,8 @@
+{
+    "domain": "http://localhost:3000",
+    "siteFolder": "/",
+    "domainProduction": "https://your-domain.ru/",
+    "siteFolderProduction": "/",
+    "domainGitHubPages": "https://aleethey.github.io/",
+    "siteFolderGitHubPages": "/Simple-Tailwind/"
+}

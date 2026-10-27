@@ -1,0 +1,63 @@
+<header id="Header">
+    <section
+        id="Logo"
+        class="wrapper flex items-center justify-center py-10 tablet:grid tablet:grid-cols-[1fr_auto] desktop:grid-cols-[1fr_auto_auto] desktop:gap-x-60 desktop:py-28">
+        <a href="#!">
+            <img src="./assets/images/icons/logo_dark.svg" alt="Logo dark icon" />
+        </a>
+        <ul
+            class="hidden desktop:flex desktop:flex-row desktop:gap-x-60 desktop:items-center justify-between font-[Roboto] text-xl text-[#4C5866]">
+            <li><a href="#!">Продукция</a></li>
+            <li><a href="#!">Материалы</a></li>
+            <li><a href="#!">О нас</a></li>
+            <li><a href="#!">Контакты</a></li>
+        </ul>
+        <div class="flex flex-row gap-x-30">
+            <a href="#!" class="hidden tablet:block">
+                <img src="./assets/images/icons/search.svg" alt="" />
+            </a>
+            <a href="#!" class="hidden tablet:block">
+                <img src="./assets/images/icons/login.svg" alt="" />
+            </a>
+        </div>
+    </section>
+    <section id="Menu" class="wrapper border-y border-y-[#DDDDDD] desktop:max-w-full">
+        <nav class="flex gap-x-30 py-15 items-center tablet:block desktop:hidden">
+            <a href="#Mobile-Menu" class="block tablet:hidden">
+                <img src="./assets/images/icons/hamburger_menu.svg" alt="" />
+            </a>
+            <ul class="hidden tablet:flex tablet:flex-row justify-between font-[Roboto] text-xl text-[#4C5866]">
+                <li><a href="#!">Продукция</a></li>
+                <li><a href="#!">Материалы</a></li>
+                <li><a href="#!">О нас</a></li>
+                <li><a href="#!">Контакты</a></li>
+            </ul>
+            <a href="#!" class="ml-auto block tablet:hidden">
+                <img src="./assets/images/icons/search.svg" alt="" />
+            </a>
+            <a href="#!" class="block tablet:hidden">
+                <img src="./assets/images/icons/login.svg" alt="" />
+            </a>
+            <div
+                id="Mobile-Menu"
+                class="fixed flex flex-col inset-0 -translate-x-full target:translate-x-0 z-10 will-change-transform transition-transform duration-300 ease-in-out tablet:hidden">
+                <div class="flex items-center justify-center py-10 bg-white">
+                    <a href="#!">
+                        <img src="./assets/images/icons/logo_dark.svg" alt="Logo dark icon" />
+                    </a>
+                </div>
+                <div class="w-full h-full flex flex-col p-15 gap-y-22 bg-[#ebebeb]">
+                    <a href="#!" class="block">
+                        <img src="./assets/images/icons/close.svg" alt="" />
+                    </a>
+                    <ul class="flex flex-col gap-y-50 justify-between font-[Roboto] text-xl text-[#4C5866]">
+                        <li><a href="#!">Продукция</a></li>
+                        <li><a href="#!">Материалы</a></li>
+                        <li><a href="#!">О нас</a></li>
+                        <li><a href="#!">Контакты</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </section>
+</header>

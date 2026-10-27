@@ -1,0 +1,14 @@
+@font-face {
+    font-family: 'Roboto';
+    font-weight: 100 900;
+    font-style: normal;
+
+    font-stretch: normal;
+    font-width: normal;
+
+    font-display: swap;
+    src:
+        url('@fonts/Roboto/Roboto-VariableFont_wdth,wght.woff2') format('woff2'),
+        url('@fonts/Roboto/Roboto-VariableFont_wdth,wght.woff') format('woff'),
+        url('@fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf') format('truetype');
+}
