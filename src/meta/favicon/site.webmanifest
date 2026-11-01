@@ -1,6 +1,6 @@
 {
-    "name": "polimerbeton-vrn.ru",
-    "short_name": "polimerbeton-vrn.ru",
+    "name": "Simple Tailwind",
+    "short_name": "ST",
     "icons": [
         {
             "src": "@meta/favicon/web-app-manifest-192x192.png",

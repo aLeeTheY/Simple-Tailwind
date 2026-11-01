@@ -1,0 +1,40 @@
+@layer base {
+    /* * Tailwind "@layer base" styles */
+
+    @font-face {
+        font-family: 'Roboto';
+        font-weight: 100 900;
+        font-style: normal;
+
+        font-stretch: normal;
+        font-width: normal;
+
+        font-display: swap;
+        src:
+            url('@fonts/Roboto/Roboto-VariableFont_wdth,wght.woff2') format('woff2'),
+            url('@fonts/Roboto/Roboto-VariableFont_wdth,wght.woff') format('woff'),
+            url('@fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf') format('truetype');
+    }
+
+    html {
+        /* ? Beasties требует явного шрифта в critical css для генерации font preload */
+        font-family: 'Roboto', sans-serif;
+
+        /* * остальные Tailwind стили */
+        @apply w-full min-h-screen overflow-x-hidden scroll-smooth scrollbar-thin antialiased;
+
+        &:has(#open-menu:target) {
+            @apply overflow-hidden tablet:overflow-auto;
+        }
+    }
+
+    svg {
+        /* stylelint-disable-next-line value-keyword-case */
+        shape-rendering: geometricPrecision;
+        transform: translate3d(0, 0, 0);
+    }
+
+    /* img {
+        image-rendering: smooth;
+    } */
+}

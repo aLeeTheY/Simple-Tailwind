@@ -12,7 +12,7 @@
 
 <html class="nojs" lang="{{ i18n.current.htmlLang }}">
     {% include "service/head.njk" %}
-    <body {% if current_page__page_name == 'index' %}id="back-to-top"{% endif %} class="grid grid-rows-[auto_1fr_auto]">
+    <body {% if current_page__page_name == 'index' %}id="back-to-top"{% endif %}>
         <!-- Preload scripts | Moved to 'head' --->
         {# {% include "service/scripts__preload.njk" %} #}
 
@@ -21,7 +21,7 @@
 
         <!-- Page content START --->
         {% include "common/header.njk" %}
-        <main>{% block content %}{% endblock %}</main>
+        <main id="page-content">{% block content %}{% endblock %}</main>
         {% include "common/footer.njk" %}
         <!-- Page content END --->
 

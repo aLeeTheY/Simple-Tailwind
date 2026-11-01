@@ -4,16 +4,24 @@
 const isProd = process.env.NODE_ENV === 'production'
 
 export default (ctx) => {
-    const isMobileFirst = ctx.options?.config?.ctx?.isMobileFirst || false
+    // ! единая точка чтения опций из gulp
+    const ctxOptions = ctx.options?.config?.ctx || {}
+
+    const isMobileFirst = ctxOptions.isMobileFirst || false
 
     // ! пути для PurgeCSS — приходят из gulp, потому что в Django и prod
     // ! билды они разные. Fallback — дефолт для обычной сборки.
-    const purgePaths = ctx.purgePaths || ['dist/**/*.html', 'dist/libs/**/*.js', 'dist/js/**/*.js']
+    const purgePaths = ctxOptions.purgePaths || [
+        'dist/**/*.html',
+        'dist/libs/**/*.js',
+        'dist/js/**/*.js',
+    ]
 
     return {
         plugins: {
-            // ! Tailwind, идёт первым
-            '@tailwindcss/postcss': {},
+            // // ! склеиваем все @import в один файл
+            // 'postcss-import': {},
+
             // * замена px на rem в зависимости от условий
             // ! default config
             // 'postcss-pxtorem': {

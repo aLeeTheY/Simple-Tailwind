@@ -40,9 +40,18 @@ const devTools = gulp.parallel(watch, server)
 
 // * --- EXPORT GULP MAIN TASKS PIPELINES
 // * ------------------------------------
-export const dev = gulp.series(clean, mainTasks, optimizeStyles, devTools)
+export const dev = gulp.series(
+    // * чистим dist/ полностью всегда при смене режима сборки
+    () => {
+        env.isForceClean = true
+        return clean()
+    },
+    mainTasks,
+    optimizeStyles,
+    devTools,
+)
 export const prod = gulp.series(
-    // * чистим dist/ полностью всегда при запуске prod
+    // * чистим dist/ полностью всегда при смене режима сборки
     () => {
         env.isForceClean = true
         return clean()

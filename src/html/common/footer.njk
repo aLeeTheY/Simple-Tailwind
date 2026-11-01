@@ -1,31 +1,51 @@
-<footer id="Footer">
-    <section id="Social" class="bg-[#4C5866]">
-        <div class="wrapper py-20 flex flex-col tablet:flex-row gap-y-20 items-center tablet:justify-between">
-            <a href="#!" class="text-white">
-                <img class="inline" src="./assets/images/icons/logo.svg" alt="Logo icon" />
+<footer id="Footer" class="flex flex-col">
+    <div class="bg-[#4C5866]">
+        <nav class="wrapper flex flex-col items-center tablet:flex-row tablet:justify-between tablet:py-29">
+            <a class="logo text-white py-20 tablet:py-0" href="#back-to-top">
+                <svg width="140" height="22" aria-hidden="true">
+                    <use href="@icons/logo/logo.svg"></use>
+                    <span class="sr-only">Наверх</span>
+                </svg>
             </a>
+
             <hr class="w-full h-1 text-[#DDDDDD] opacity-20 tablet:hidden" />
-            <div class="flex gap-x-32">
-                <a href="#!">
-                    <img src="./assets/images/icons/facebook.svg" alt="Facebook" />
+
+            <div class="flex py-20 gap-x-30 tablet:py-0">
+                <a class="footer-nav-menu__icon-link" href="https://www.facebook.com/">
+                    <svg width="24" height="24" aria-hidden="true">
+                        <use href="@icons/social/facebook.svg"></use>
+                        <span class="sr-only">Перейти в Facebook</span>
+                    </svg>
                 </a>
-                <a href="#!">
-                    <img src="./assets/images/icons/twitter.svg" alt="Twitter" />
+                <a class="footer-nav-menu__icon-link" href="https://x.com/">
+                    <svg width="24" height="24" aria-hidden="true">
+                        <use href="@icons/social/twitter.svg"></use>
+                        <span class="sr-only">Перейти на Twitter</span>
+                    </svg>
                 </a>
-                <a href="#!">
-                    <img src="./assets/images/icons/instagram.svg" alt="Instagram" />
+                <a class="footer-nav-menu__icon-link" href="https://www.instagram.com/">
+                    <svg width="24" height="24" aria-hidden="true">
+                        <use href="@icons/social/instagram.svg"></use>
+                        <span class="sr-only">Перейти в Instagram</span>
+                    </svg>
                 </a>
-                <a href="#!">
-                    <img src="./assets/images/icons/youtube.svg" alt="YouTube" />
+                <a class="footer-nav-menu__icon-link" href="https://www.youtube.com/">
+                    <svg width="24" height="24" aria-hidden="true">
+                        <use href="@icons/social/youtube.svg"></use>
+                        <span class="sr-only">Перейти на YouTube</span>
+                    </svg>
                 </a>
             </div>
-        </div>
-    </section>
-    <section id="Copyright" class="bg-[#EBEBEB]">
-        <div class="wrapper py-3 flex justify-center">
-            <a href="#!">
-                <img src="./assets/images/icons/copyright.svg" alt="Copyright icon" />
+        </nav>
+    </div>
+    <div class="bg-[#EBEBEB]">
+        <nav class="wrapper flex justify-center items-center py-3 ">
+            <a href="#back-to-top">
+                <svg width="92" height="15" aria-hidden="true">
+                    <use href="@icons/copyright/copyright.svg"></use>
+                    <span class="sr-only">Наверх</span>
+                </svg>
             </a>
-        </div>
-    </section>
+        </nav>
+    </div>
 </footer>

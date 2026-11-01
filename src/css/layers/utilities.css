@@ -1,0 +1,97 @@
+/* * Tailwind "@layer utilities" styles */
+/* stylelint-disable scss/operator-no-unspaced */
+
+/* @utility grid-areas-* {
+    grid-template-areas: --value([*]);
+}
+
+@utility grid-area-* {
+    grid-area: --value([*]);
+} */
+
+/* ! --- Page Wrapper
+   ! ---------------- */
+@utility wrapper {
+    @apply mx-auto w-full max-w-576 px-[clamp(15px,0.0706*100vw-7.6588px,33px)];
+    @apply tablet:max-w-768 tablet:px-[clamp(33px,0.0314*100vw+14.8743px,39px)];
+    @apply laptop:max-w-1440 laptop:px-[clamp(39px,0.1878*100vw-105.4024px,165px)];
+    @apply desktop:px-165;
+}
+
+@utility negative-wrapper {
+    @apply relative mx-auto w-screen px-[clamp(15px,0.0706*100vw-7.6588px,33px)];
+    @apply overflow-x-auto scrollbar-thin;
+
+    /* * с Tablet и выше -> сбрасываем стили к обычному wrapper */
+    @apply tablet:static tablet:w-full;
+}
+
+/* ! --- Hero section
+   ! ---------------- */
+@utility my-hero__gap-x {
+    @apply tablet:gap-x-[clamp(30px,0.1416*100vw-78.7332px,125px)];
+    @apply desktop:gap-x-125;
+}
+
+/* * --- Hero left part container */
+@utility my-hero__left-part__gap-y {
+    @apply gap-y-[clamp(20px,0.0224*100vw+12.8188px,30px)];
+    @apply laptop:gap-y-30;
+}
+
+@utility my-hero__left-part__py {
+    @apply py-[clamp(49px,0.0275*100vw+40.1882px,56px)];
+}
+
+@utility my-hero__left-part__min-w {
+    @apply tablet:min-w-[clamp(286px,0.5445*100vw-28.178px,390px)];
+    @apply laptop:min-w-[clamp(390px,0.082*100vw+326.9672px,445px)];
+    @apply desktop:min-w-445;
+}
+
+/* * --- Hero h1 & p group */
+@utility my-hero__h1-group__gap-y {
+    @apply gap-y-[clamp(15px,0.0196*100vw+8.7059px,20px)];
+    @apply tablet:gap-y-[clamp(20px,0.0524*100vw-10.2094px,30px)];
+    @apply laptop:gap-y-30;
+}
+
+@utility my-hero__h1-group__max-w {
+    @apply tablet:max-w-[clamp(286px,0.5445*100vw-28.178px,390px)];
+    @apply laptop:max-w-[clamp(390px,0.082*100vw+326.9672px,445px)];
+    @apply desktop:max-w-445;
+}
+
+/* ! --- Partners section
+   ! -------------------- */
+@utility my-partners__cards__grid {
+    @apply grid w-max grid-areas-[hahnemuehle,canson,royal-talens,fabriano] place-items-stretch gap-30;
+    @apply tablet:w-full tablet:grid-areas-[hahnemuehle,canson|royal-talens,fabriano];
+    @apply laptop:grid-areas-[hahnemuehle,canson,royal-talens,fabriano];
+}
+
+/* ! --- Sketchbook section
+   ! ---------------------- */
+@utility my-sketchbook__main-container__gap-y {
+    @apply gap-y-[clamp(0px,0.0392*100vw-12.5882px,10px)];
+    @apply tablet:gap-y-10;
+    @apply laptop:gap-y-0;
+}
+
+@utility my-sketchbook__main-container__pr {
+    @apply laptop:pr-[clamp(0px,0.422*100vw-442.6726px,165px)];
+}
+
+@utility my-sketchbook__img-container__mt {
+    @apply mt-[clamp(60px,0.0447*100vw+25.6185px,90px)];
+    @apply desktop:mt-90;
+}
+
+@utility my-sketchbook__text-part__max-w {
+    @apply laptop:max-w-[clamp(330px,0.0298*100vw+307.079px,350px)];
+}
+
+@utility my-sketchbook__text-part__py {
+    @apply laptop:py-[clamp(60px,0.0447*100vw+25.6185px,90px)];
+    @apply desktop:py-90;
+}

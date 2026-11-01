@@ -14,24 +14,23 @@
       </rdf:Description>
     </rdf:RDF>
   </metadata>
-  <g clip-path="url(#SvgjsClipPath1067)">
+  <g clip-path="url(#SvgjsClipPath1099)">
     <rect fill="#ffffff" height="1000" width="1000" />
-    <g transform="matrix(50,0,0,50,100,100)">
+    <g transform="matrix(43.75,0,0,43.75,150,150)">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        fill="#4a148c"
+        fill="none"
         height="16"
         viewBox="0 0 16 16"
         width="16">
         <path
-          clip-rule="evenodd"
-          d="M2.34315 2.34315C5.46734 -0.781049 10.5327 -0.781049 13.6569 2.34315C16.781 5.46734 16.781 10.5327 13.6569 13.6569C10.5327 16.781 5.46734 16.781 2.34315 13.6569C-0.781049 10.5327 -0.781049 5.46734 2.34315 2.34315ZM4.38851 2.15256C2.19377 4.3473 2.5318 8.2439 5.14395 10.856C7.7561 13.4682 11.6527 13.8062 13.8474 11.6115C16.0421 9.41673 15.7041 5.52012 13.092 2.908C10.4799 0.295887 6.58326 -0.0420778 4.38851 2.15256Z"
-          fill-rule="evenodd" />
+          d="M15.5 8C15.5 12.1421 12.1421 15.5 8 15.5C3.85786 15.5 0.5 12.1421 0.5 8C0.5 3.85786 3.85786 0.5 8 0.5C12.1421 0.5 15.5 3.85786 15.5 8Z"
+          stroke="#333333" />
       </svg>
     </g>
   </g>
   <defs>
-    <clipPath id="SvgjsClipPath1067">
+    <clipPath id="SvgjsClipPath1099">
       <rect height="1000" rx="500" ry="500" width="1000" x="0" y="0" />
     </clipPath>
   </defs>

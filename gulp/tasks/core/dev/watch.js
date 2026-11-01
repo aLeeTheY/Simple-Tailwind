@@ -15,11 +15,17 @@ import { videos } from '../../assets/media/videos.js'
 import { libs } from '../../scripts/libs.js'
 import { misc } from '../../assets/misc.js'
 
-// TODO: починить watchers
 // * --- EXPORT GULP TASK FOR WATCH KEY FILES
 // * ----------------------------------------
 export function watch() {
-    gulp.watch([path.watch.html, path.watch.njk, path.watch.i18n.files], html)
+    // ! проверка на режим Tailwind
+    const isTailwind = env.cssMode === 'css'
+
+    // * 1. если Tailwind, при изменении HTML/Nunjucks нужно пересобрать и HTML/Nunjucks + CSS (параллельно)
+    const htmlWatcherTasks = isTailwind ? gulp.parallel(html, styles) : html
+    gulp.watch([path.watch.html, path.watch.njk, path.watch.i18n.files], htmlWatcherTasks)
+
+    // * 2. meta-файлы
     gulp.watch(
         [
             // * смотрим все файлы
@@ -29,8 +35,15 @@ export function watch() {
         ],
         meta,
     )
+
+    // * 3. стили (Sass или Tailwind)
     gulp.watch(path.watch.getStyles(env.cssMode).files, styles)
-    gulp.watch(path.watch.getScripts(env.jsMode), scripts)
+
+    // * 4. если Tailwind, классы могут добавляться динамически через JS, поэтому тоже пересобираем CSS
+    const jsWatcherTasks = isTailwind ? gulp.parallel(scripts, styles) : scripts
+    gulp.watch(path.watch.getScripts(env.jsMode), jsWatcherTasks)
+
+    // * 5. ассеты
     gulp.watch(path.watch.audio, audio)
     gulp.watch(path.watch.fonts, fonts)
     gulp.watch(path.watch.icons, icons)

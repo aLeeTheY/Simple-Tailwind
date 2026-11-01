@@ -4,44 +4,25 @@ import gulp from 'gulp'
 import nodePath from 'path'
 import fastGlob from 'fast-glob'
 import browserSync from 'browser-sync'
+import Beasties from 'beasties'
 
 import { env } from '../../config/env.js'
-// import { path } from '../../config/path.js'
 import { build } from '../../config/build.js'
 import { notify, NOTIFICATION_HANDLER_TITLES } from '../../helpers/error-handler.js'
-import { startCriticalServer, stopCriticalServer } from '../core/dev/server.js'
 
-import penthouse from 'penthouse'
-// import puppeteer from 'puppeteer'
-
-// ! Превращает алиасы в рабочие URL для penthouse.
-// ! После резолва penthouse увидит /css/main.min.css и запросит
-// ! его через server.js routes → получит настоящий CSS.
-// ! НЕ трогает оригинал — оригинал сохраняется и в него инжектится <style>.
+// ! Превращает алиасов-плейсхолдеров в рабочие URL: @scss/main.scss -> /css/main.min.css
+// ? После резолва Beasties увидит /css/main.min.css
 function resolveAliasesForCritical(html) {
-    return html
-        .replace(
-            /@(scss|css)\/([^"'\s)]+)/g,
-            (m, t, p) => `/css/${p.replace(/\.scss$/, '.min.css')}`,
-        )
-        .replace(/@(ts|js)\/([^"'\s)]+)/g, (m, t, p) => `/js/${p.replace(/\.ts$/, '.min.js')}`)
-        .replace(
-            /@(fonts|images|videos|audio|misc)\/([^"'\s)]+)/g,
-            (m, t, p) => `/assets/${t}/${p}`,
-        )
-        .replace(/@libs\/([^"'\s)]+)/g, (m, p) => `/libs/${p}`)
-        .replace(
-            /@icons\/(.+?)\.svg/g,
-            (m, p) => `/assets/icons/sprite.svg#${p.replace(/\//g, '--')}`,
-        )
-        .replace(/@meta\/favicon\/([^"'\s)]+)/g, (m, p) => `/${p}`)
-        .replace(/@meta\/([^"'\s)]+)/g, (m, p) => `/${p}`)
+    return html.replace(
+        /@(scss|css)\/([^"'\s)]+)/g,
+        (m, t, p) => `/css/${p.replace(/\.(scss|css)$/, '.min.css')}`,
+    )
 }
 
 // * --- EXPORT GULP TASK FOR INLINE CRITICAL CSS TO HTML FILES
 // * ----------------------------------------------------------
 export async function criticalCss() {
-    // * Пропускаем таску при локальной сборке или если включен полный инлайн CSS
+    // * Пропускаем текущий таск при локальной сборке или если включен полный инлайн CSS
     if (env.isInlineCSS) {
         notify.info(
             NOTIFICATION_HANDLER_TITLES.CRITICAL_CSS,
@@ -54,19 +35,9 @@ export async function criticalCss() {
         return
     }
 
-    // ! ОБЯЗАТЕЛЬНО: задаем путь к Chrome в process.env ДО вызова penthouse
-    // ! use system Google Chrome browser
-    process.env.PUPPETEER_EXECUTABLE_PATH =
-        process.env.PUPPETEER_EXECUTABLE_PATH ||
-        'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
-
-    // ! поиск html и css файлов
+    // ! поиск всех html файлов
     const dir = nodePath.resolve(build.html)
-
-    const htmlFiles = fastGlob.sync('**/*.html', {
-        cwd: dir,
-        absolute: true,
-    })
+    const htmlFiles = fastGlob.sync('**/*.html', { cwd: dir, absolute: true })
     if (!htmlFiles.length) {
         notify.warn(
             NOTIFICATION_HANDLER_TITLES.CRITICAL_CSS,
@@ -75,144 +46,101 @@ export async function criticalCss() {
         return
     }
 
-    const cssFiles = fastGlob.sync('**/*.css', {
-        cwd: build.styles,
-        absolute: true,
-    })
-    if (!cssFiles.length) {
-        notify.warn(
-            NOTIFICATION_HANDLER_TITLES.CRITICAL_CSS,
-            'No CSS files found in build directory!',
-        )
-        return
-    }
-
-    // ! Если css файлов несколько, читаем их и объедияем в одну строку для Penthouse
-    const combinedCss = cssFiles.map((file) => fs.readFileSync(file, 'utf-8')).join('\n')
-
     if (env.isVerbose) {
-        console.log('════════════ CRITICAL-CSS DEBUG ════════════')
-        console.log('build.html       :', build.html)
-        console.log('build.styles     :', build.styles)
-        console.log('htmlFiles length :', htmlFiles.length)
-        console.log('htmlFiles        :', htmlFiles)
-        console.log('cssFiles length  :', cssFiles.length)
-        console.log('cssFiles         :', cssFiles)
-        console.log('combinedCss.size :', combinedCss.length, 'chars')
+        const cssFiles = fastGlob.sync('**/*.css', { cwd: build.styles, absolute: true })
+        const combinedCss = cssFiles.map((file) => fs.readFileSync(file, 'utf-8')).join('\n')
 
-        if (combinedCss.length < 1000) {
-            console.log('combinedCss (full, because too short):')
-            console.log(combinedCss)
-        } else {
-            console.log('combinedCss (first 500 chars):')
-            console.log(combinedCss.slice(0, 500))
-        }
-        console.log('════════════════════════════════════════════')
+        console.log('════════════ CRITICAL-CSS (BEASTIES) DEBUG ════════════')
+        console.log('build.html        :', build.html)
+        console.log('htmlFiles length  :', htmlFiles.length)
+        console.log('cssFiles length   :', cssFiles.length)
+        console.log('combinedCss.size  :', combinedCss.length, 'chars')
+        console.log('══════════════════════════════════════════════════════')
     }
 
-    // ! не нужно, penthouse захватывает media queries при генерации благодаря postcss-sort-media-queries
-    // const viewports = [
-    //     { width: 375, height: 667 }, // Mobile
-    //     { width: 1920, height: 1080 }, // Desktop
-    // ]
-
-    const viewport = {
-        width: 1920,
-        height: 1080,
+    // ! кастомный логгер для Beasties
+    const beastiesLogger = {
+        // * Только для verbose режима
+        trace: (msg) => env.isVerbose && console.log(`[Beasties TRACE] ${msg}`),
+        debug: (msg) => env.isVerbose && console.log(`[Beasties DEBUG] ${msg}`),
+        info: (msg) => env.isVerbose && notify.info(NOTIFICATION_HANDLER_TITLES.CRITICAL_CSS, msg),
+        // * Предупреждения и ошибки выводим всегда
+        warn: (msg) => notify.warn(NOTIFICATION_HANDLER_TITLES.CRITICAL_CSS, msg),
+        error: (msg) => notify.warn(NOTIFICATION_HANDLER_TITLES.CRITICAL_CSS, msg), // Если есть notify.error, используй его
     }
 
-    // Очищаем и пересоздаем директорию для скриншотов отладки
-    const debugDir = nodePath.resolve('./debug__critical_css__screenshots')
-    if (fs.existsSync(debugDir)) {
-        fs.rmSync(debugDir, { recursive: true, force: true })
-    }
-    fs.mkdirSync(debugDir, { recursive: true })
+    const beasties = new Beasties({
+        // ! брать CSS и <link> тегов
+        external: true,
+        // ! базовая папка для поиска CSS файлов | относительно чего ищем
+        path: nodePath.resolve(build.html),
+        // ! Preload-статрегия для стилей
+        preload: 'swap',
+        // ! Fallback preload-стратегии загрузки стилей на NoJS системах
+        noscriptFallback: true,
+        // ! Обрабатываем инлайн стили <style> и вырезаем то, что не используется на странице
+        reduceInlineStyles: true,
+        // ! Сливаем все <style> в один на странице
+        mergeStylesheets: true,
+        // ! Шрифты: inline + preload | <html> обязательно должен содержать в себе font-family заданный явно
+        fonts: true,
+        // ! Кейфреймы — только те, что нужны critical css
+        keyframes: 'critical',
+        // ! Сжатие critical css
+        compress: true,
+        // ! Аналог penthouse forceInclude из старой таски
+        allowRules: [
+            /:root/,
+            /data-theme/,
+            /^\*/,
+            /^\.js/,
+            /^\.nojs/,
+            /^\.page-/,
+            /^\.avif/,
+            /^\.webp/,
+            /^\.rounded-/,
+        ],
+        // ! Назначем logger
+        logger: beastiesLogger,
+        // ! Меняем logLevel в зависимости от --verbose флага
+        logLevel: env.isVerbose ? 'trace' : 'warn',
+    })
 
-    const TEMP_PORT = 7777
-    const protocol = env.isHttps ? 'https' : 'http'
+    for (const filePath of htmlFiles) {
+        const originalHtml = fs.readFileSync(filePath, 'utf-8')
 
-    // * Запускаем временный сервер перед генерацией
-    await startCriticalServer(TEMP_PORT)
+        // ! 1. Подменяем алиасы ТОЛЬКО В ПАМЯТИ, чтобы Beasties нашел файлы
+        const resolvedHtml = resolveAliasesForCritical(originalHtml)
 
-    try {
-        for (const filePath of htmlFiles) {
-            // ! ОРИГИНАЛ с алиасами (в него потом инжектим <style>)
-            const originalHtml = fs.readFileSync(filePath, 'utf-8')
+        try {
+            // ! 2. Beasties сам вырежет критический CSS и вставит его в <style>
+            const processed = await beasties.process(resolvedHtml)
 
-            if (
-                !originalHtml.includes(
-                    '<!-- ! DO NOT REMOVE THIS COMMENT !!! | CRITICAL CSS PLACEHOLDER -->',
-                )
-            ) {
-                continue
+            // ! 3. Если это Django-сборка, возвращаем CSS-плейсхолдеры обратно,
+            // ! чтобы djangoizeHtml (которая запустится после) смогла их заменить на {% static %}
+            let finalHtml = processed
+            if (env.isDjangoBuild) {
+                if (env.cssMode === 'scss') {
+                    finalHtml = finalHtml.replace(
+                        /\/css\/([^"'\s)]+)\.min\.css/g,
+                        (m, p) => `@scss/${p}.scss`,
+                    )
+                } else {
+                    finalHtml = finalHtml.replace(
+                        /\/css\/([^"'\s)]+)\.min\.css/g,
+                        (m, p) => `@css/${p}.css`,
+                    )
+                }
             }
 
-            // ! Пишем ВРЕМЕННУЮ resolved-версию → её увидит penthouse
-            fs.writeFileSync(filePath, resolveAliasesForCritical(originalHtml))
-
-            const relativePath = nodePath.relative(dir, filePath).replace(/\\/g, '/')
-            const httpUrl = `${protocol}://localhost:${TEMP_PORT}/${relativePath}`
-            const pageSlug = relativePath.replace(/\.html$/, '').replace(/[\\/]/g, '_')
-            const screenshotBasePath = `${debugDir.replace(/\\/g, '/')}/${pageSlug}`
-
-            try {
-                const criticalCss = await penthouse({
-                    url: httpUrl,
-                    cssString: combinedCss,
-                    width: viewport.width,
-                    height: viewport.height,
-                    keepLargerMediaQueries: true,
-                    renderWaitTime: 300,
-                    forceInclude: [
-                        /@font-face/,
-                        /data-theme/,
-                        /^\.js/,
-                        /^\.nojs/,
-                        /^\.page-/,
-                        /^\.avif/,
-                        /^\.webp/,
-
-                        // ! Скрытые элементы: penthouse их выкидывает (не видны в рендере),
-                        // ! но без правил они станут ВИДИМЫМИ после инжекта critical CSS
-                        /my-header__hidden-part/,
-                        /offcanvas/,
-                        /my-cookie-consent-banner/,
-                    ],
-                    screenshots: { basePath: screenshotBasePath, type: 'jpeg', quality: 80 },
-                    blockJSRequests: true,
-                    puppeteer: {
-                        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-                        headless: true,
-                        args: [
-                            '--no-sandbox',
-                            '--disable-setuid-sandbox',
-                            '--allow-file-access-from-files',
-                            '--disable-web-security',
-                            '--ignore-certificate-errors',
-                        ],
-                    },
-                })
-
-                // ! Инжектим critical CSS в ОРИГИНАЛ (с алиасами).
-                // ! Так djangoizeHtml сможет потом превратить @scss → {% static %}
-                const finalHtml = originalHtml.replace(
-                    '<!-- ! DO NOT REMOVE THIS COMMENT !!! | CRITICAL CSS PLACEHOLDER -->',
-                    `<style type="text/css" id="critical-css">${criticalCss}</style>`,
-                )
-                fs.writeFileSync(filePath, finalHtml)
-            } catch (err) {
-                // ! Восстанавливаем оригинал, чтобы не оставить resolved-версию без CSS
-                fs.writeFileSync(filePath, originalHtml)
-
-                notify.warn(
-                    NOTIFICATION_HANDLER_TITLES.CRITICAL_CSS,
-                    `${nodePath.basename(filePath)}: ${err.message}`,
-                )
-            }
+            // ! 4. Просто пишем результат на диск. Всё, что сгенерил Beasties, уже внутри.
+            fs.writeFileSync(filePath, finalHtml)
+        } catch (err) {
+            notify.warn(
+                NOTIFICATION_HANDLER_TITLES.CRITICAL_CSS,
+                `${nodePath.basename(filePath)}: ${err.message}`,
+            )
         }
-    } finally {
-        // Гасим временный сервер в любом случае (даже при ошибке)
-        stopCriticalServer()
     }
 
     // * update dev server

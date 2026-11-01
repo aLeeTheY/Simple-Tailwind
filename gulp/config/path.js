@@ -114,6 +114,11 @@ export const path = {
         //     files: `${srcFolder}/scss/*.scss`,
         // },
         getStyles(mode) {
+            // if (mode === 'css') {
+            //     return { base: `${srcFolder}/${mode}`, files: `${srcFolder}/${mode}/**/*.${mode}` }
+            // }
+            // return { base: `${srcFolder}/${mode}`, files: `${srcFolder}/${mode}/*.${mode}` }
+
             return { base: `${srcFolder}/${mode}`, files: `${srcFolder}/${mode}/*.${mode}` }
         },
         // scripts: {

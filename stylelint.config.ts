@@ -74,6 +74,7 @@ export default {
             },
         ],
 
+        'comment-empty-line-before': null,
         'scss/double-slash-comment-empty-line-before': null,
         'scss/dollar-variable-empty-line-before': null,
         'media-feature-range-notation': 'prefix',
@@ -81,7 +82,7 @@ export default {
         'at-rule-empty-line-before': null,
         'selector-class-pattern': null,
         'custom-property-pattern': null,
-        // 'length-zero-no-unit': null,
+        'length-zero-no-unit': null,
         'number-max-precision': 5,
         'font-family-name-quotes': 'always-unless-keyword',
         // 'scss/double-slash-comment-whitespace-inside': '^\\/\\/[!*?todo] ([a-z0-9])*$',
