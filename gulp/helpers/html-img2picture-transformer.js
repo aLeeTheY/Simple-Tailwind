@@ -28,8 +28,8 @@ export function htmlImg2PictureTransformer(assetsSrcDir, options = {}) {
             {
                 media: 768, // Для экранов до 768px
                 suffix: '-mobile',
-                baseWidth: 400, // Ширина версии 1x будет ~400px
-                densities: [1, 2], // Сгенерирует: 1x (400px), 2x (800px)
+                baseWidth: 375, // Ширина версии 1x будет 375px
+                densities: [1, 2, 3], // Сгенерирует: 1x (375px), 2x (750px)
             },
             // Десктоп (натив) оставляем без медиа-запроса,
             // он пойдет в основной srcset без суффикса
@@ -124,23 +124,20 @@ export function htmlImg2PictureTransformer(assetsSrcDir, options = {}) {
                         if (mime === 'image/jpeg') {
                             return origExt.toLowerCase() === 'jpeg' ? 'jpeg' : 'jpg'
                         }
-                        return mime.split('/')[1] // для webp, avif, png работает корректно
+                        return mime.split('/')[1]
                     }
                     const ext = getExtension(mimeType, originalExt)
 
-                    // 1. Адаптивные брейкпоинты (Mobile, Tablet и т.д.)
+                    // 1. Собираем данные для мобильных версий (с суффиксом -mobile)
+                    const mobileSources = []
                     config.breakpoints.forEach((bp) => {
-                        // Рассчитываем, какие плотности (1x, 2x) мы реально можем создать
-                        // исходя из размера оригинальной картинки
                         const validDensities = bp.densities.filter(
                             (d) => originalWidth >= bp.baseWidth * d || d === 1,
                         )
-
                         if (validDensities.length === 0) {
                             return
-                        } // Картинка слишком мала даже для 1x
+                        }
 
-                        // Собираем строку srcset: "file-mobile.jpg 1x, file-mobile@2x.jpg 2x"
                         const srcsetString = validDensities
                             .map((d) => {
                                 const densitySuffix = d === 1 ? '' : `@${d}x`
@@ -148,26 +145,60 @@ export function htmlImg2PictureTransformer(assetsSrcDir, options = {}) {
                             })
                             .join(', ')
 
-                        const mediaCondition = config.desktopFirst
-                            ? `(max-width: ${bp.media}px)`
-                            : `(min-width: ${bp.media}px)`
-
-                        const source = new Element('source', {
-                            type: mimeType,
-                            media: mediaCondition,
-                            srcset: srcsetString,
-                        })
-                        DomUtils.appendChild(picture, source)
+                        mobileSources.push({ bp, srcsetString })
                     })
 
-                    // 2. Десктоп / Натив (без media-запроса)
-                    // Мы не генерируем .jpg внутри webp, поэтому фильтруем
-                    if (ext !== originalExt.toLowerCase()) {
-                        const nativeSource = new Element('source', {
-                            type: mimeType,
-                            srcset: `${basePath}.${ext}`,
+                    // 2. Собираем данные для десктопной версии (без суффикса)
+                    const hasNativeSource = ext !== originalExt.toLowerCase()
+                    const nativeSrcset = hasNativeSource ? `${basePath}.${ext}` : null
+
+                    if (config.desktopFirst) {
+                        // === DESKTOP FIRST ===
+                        // 1. Сначала мобилки (max-width: 768px)
+                        mobileSources.forEach(({ bp, srcsetString }) => {
+                            DomUtils.appendChild(
+                                picture,
+                                new Element('source', {
+                                    type: mimeType,
+                                    media: `(max-width: ${bp.media}px)`,
+                                    srcset: srcsetString,
+                                }),
+                            )
                         })
-                        DomUtils.appendChild(picture, nativeSource)
+                        // 2. Потом десктоп (без media, как fallback)
+                        if (nativeSrcset) {
+                            DomUtils.appendChild(
+                                picture,
+                                new Element('source', {
+                                    type: mimeType,
+                                    srcset: nativeSrcset,
+                                }),
+                            )
+                        }
+                    } else {
+                        // === MOBILE FIRST ===
+                        // 1. Сначала десктоп (min-width: 769px, как ты и просил +1px)
+                        if (nativeSrcset) {
+                            const desktopMinWidth = (config.breakpoints[0]?.media || 768) + 1
+                            DomUtils.appendChild(
+                                picture,
+                                new Element('source', {
+                                    type: mimeType,
+                                    media: `(min-width: ${desktopMinWidth}px)`,
+                                    srcset: nativeSrcset,
+                                }),
+                            )
+                        }
+                        // 2. Потом мобилки (без media, как fallback)
+                        mobileSources.forEach(({ srcsetString }) => {
+                            DomUtils.appendChild(
+                                picture,
+                                new Element('source', {
+                                    type: mimeType,
+                                    srcset: srcsetString, // Без media запроса!
+                                }),
+                            )
+                        })
                     }
                 })
 
