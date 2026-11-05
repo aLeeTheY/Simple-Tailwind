@@ -7,6 +7,7 @@ export default (ctx) => {
     // ! единая точка чтения опций из gulp
     const ctxOptions = ctx.options?.config?.ctx || {}
 
+    const cssMode = ctxOptions.cssMode || 'scss'
     const isMobileFirst = ctxOptions.isMobileFirst || false
 
     // ! пути для PurgeCSS — приходят из gulp, потому что в Django и prod
@@ -55,11 +56,11 @@ export default (ctx) => {
             //     minPixelValue: 3,
             //     exclude: /node_modules/i,
             // },
-            // ! pxToRem --- ALL
+            // ! pxToRem --- ALL | Ломает border-radius Tailwind'а !!!
             'postcss-pxtorem': {
                 rootValue: 16,
                 unitPrecision: 5,
-                propList: ['*'],
+                propList: ['*', '!border*'],
                 selectorBlackList: ['html'],
                 replace: true,
                 mediaQuery: false,
@@ -100,11 +101,33 @@ export default (ctx) => {
                     by: 'whole',
                     ids: false,
                     except: [
+                        // * Все переменные Tailwind
+                        /^--tw-/,
+                        /^--\*:/,
+                        /^--color-/,
+                        /^--font-/,
+                        /^--text-/,
+                        /^--font-weight-/,
+                        /^--tracking-/,
+                        /^--leading-/,
+                        /^--tab-size-/,
+                        /^--breakpoint-/,
+                        /^--container-/,
+                        /^--spacing-/,
+                        /^--radius-/,
+                        /^--shadow-/,
+                        /^--inset-shadow-/,
+                        /^--drop-shadow-/,
+                        /^--blur-/,
+                        /^--perspective-/,
+                        /^--zoom-/,
+                        /^--aspect-/,
+                        /^--ease-/,
+                        /^--animate-/,
+                        /^--default-/, // Дефолтные значения
+
+                        // * Всё остальное
                         'dont-touch-me',
-                        'squircle-smooth',
-                        'squircle-radius',
-                        'footer__fade__opacity',
-                        'footer__current-height',
                     ],
                     outputMapCallback: false,
                 },
@@ -146,25 +169,30 @@ export default (ctx) => {
             //         multi: false,
             //     },
             // }),
-            // * удаление неиспользуемых CSS (только в staging/prod)
-            ...(isProd && {
-                '@fullhuman/postcss-purgecss': {
-                    content: purgePaths,
+            // * удаление неиспользуемых CSS (только в staging/prod + SCSS)
+            ...(isProd &&
+                cssMode === 'scss' && {
+                    '@fullhuman/postcss-purgecss': {
+                        content: purgePaths,
 
-                    // ! Защитит .page--ru, .page--en, .page--fr и т.д.
-                    // ! safelist: [/--[a-z]{2}$/],
-                    safelist: {
-                        // * начинается с my- / is- / has- или заканчивается на --ru/--en
-                        standard: [/--ru$/, /--en$/, /^is-/, /^has-/],
+                        // ! Объясняем PurgeCSS, что двоеточия (md:flex), слэши (w-1/2) и скобки (w-[350px]) — это часть класса, а не разделители слов.
+                        defaultExtractor: (content) =>
+                            content.match(/[^<>"'`\s]*[^<>"'`\s:]/g) || [],
 
-                        // * атрибутные селекторы [type=...], [name=...]
-                        deep: [/\[type=/, /\[name=/, /\[id=/],
+                        // ! Защитит .page--ru, .page--en, .page--fr и т.д.
+                        // ! safelist: [/--[a-z]{2}$/],
+                        safelist: {
+                            // * начинается с my- / is- / has- или заканчивается на --ru/--en + Tailwind
+                            standard: [/--ru$/, /--en$/, /^is-/, /^has-/, /^--tw-/],
 
-                        // * не вырезать мои собственные классы
-                        greedy: [/my-/],
+                            // * атрибутные селекторы [type=...], [name=...]
+                            deep: [/\[type=/, /\[name=/, /\[id=/],
+
+                            // * не вырезать мои собственные классы
+                            greedy: [/my-/],
+                        },
                     },
-                },
-            }),
+                }),
             // * сжатие CSS (только в prod и staging modes)
             ...(isProd && {
                 cssnano: {

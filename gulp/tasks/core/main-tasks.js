@@ -46,8 +46,10 @@ export const dev = gulp.series(
         env.isForceClean = true
         return clean()
     },
+
     mainTasks,
     optimizeStyles,
+
     devTools,
 )
 export const prod = gulp.series(
@@ -58,16 +60,13 @@ export const prod = gulp.series(
     },
 
     mainTasks,
-
-    // ! --- между mainTasks и revise !!!
     optimizeStyles,
-    // ! --------------------------------
+
+    // ! CRITICAL CSS
+    criticalCss,
 
     !env.isDjangoBuild ? revise : (cb) => cb(), // * ревизии | только если нет билда под Django
     env.isObfuscation ? obfuscateSelectors : (cb) => cb(), // * обфускация
-
-    // ! CRITICAL CSS TASK
-    criticalCss,
 
     // * ставим {% static %}, если активна сборка под django
     // ! всегда после CRITICAL CSS !!!

@@ -80,8 +80,21 @@ export function styles() {
             // ! фикс алиасов для Tailwind: @css/ -> ./
             .pipe(
                 gulpIf(
-                    env.cssMode === 'css',
+                    env.cssMode === 'tailwind',
                     gulpReplace(/@import\s+['"]@css\/(.*?)['"]/g, "@import './$1'"),
+                ),
+            )
+
+            // * прогоняем Tailwind если сборка под CSS (Tailwind)
+            .pipe(
+                gulpIf(
+                    env.cssMode === 'tailwind',
+                    postcss([
+                        tailwindcss({
+                            // Явно указываем базовую директорию для поиска исходников
+                            base: process.cwd(),
+                        }),
+                    ]),
                 ),
             )
 
@@ -103,19 +116,6 @@ export function styles() {
                     webImagesCSS({
                         mode: 'all',
                     }),
-                ),
-            )
-
-            // * прогоняем Tailwind если сборка под CSS (Tailwind)
-            .pipe(
-                gulpIf(
-                    env.cssMode === 'css',
-                    postcss([
-                        tailwindcss({
-                            // Явно указываем базовую директорию для поиска исходников
-                            base: process.cwd(),
-                        }),
-                    ]),
                 ),
             )
 
@@ -157,6 +157,7 @@ export function optimizeStyles() {
                             file,
                             config: {
                                 ctx: {
+                                    cssMode: env.cssMode,
                                     isMobileFirst: env.isMobileFirst,
                                     purgePaths: [
                                         `${build.html}**/*.html`,

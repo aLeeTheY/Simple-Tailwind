@@ -48,7 +48,8 @@ const argv = yargs(hideBin(process.argv))
         alias: ['c'],
         type: 'boolean',
         default: false,
-        description: 'Triggers a hard sweep of the compiled `dist/` workspace directory',
+        description:
+            'Triggers a hard clean of build files (wipes `dist/` or generated Django static & templates)',
     })
     // * Флаг local
     .option('local', {
@@ -70,9 +71,8 @@ const argv = yargs(hideBin(process.argv))
         alias: ['cm'],
         type: 'string',
         default: 'scss',
-        choices: ['css', 'scss'],
-        description:
-            'Set styles processing mode: standard CSS (Tailwind CSS) or Sass/SCSS compilation',
+        choices: ['tailwind', 'scss'],
+        description: 'Set styles processing mode: Tailwind CSS or Sass/SCSS compilation',
     })
     // * Флаг js-mode
     .option('js-mode', {
@@ -162,7 +162,7 @@ const argv = yargs(hideBin(process.argv))
     })
     // * Флаг gh-pages
     .option('gh-pages', {
-        alias: ['demo', 'gh', 'g'],
+        alias: ['demo', 'github', 'gh', 'g'],
         type: 'boolean',
         default: false,
         description:

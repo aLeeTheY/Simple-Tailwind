@@ -74,6 +74,8 @@ export async function criticalCss() {
         external: true,
         // ! базовая папка для поиска CSS файлов | относительно чего ищем
         path: nodePath.resolve(build.html),
+        // ! отрезаем префикс сайта, например: www.yourdomain.com/css/ -> /css/
+        publicPath: env.assetPrefix || '/',
         // ! Preload-статрегия для стилей
         preload: 'swap',
         // ! Fallback preload-стратегии загрузки стилей на NoJS системах

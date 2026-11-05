@@ -19,7 +19,7 @@ import { misc } from '../../assets/misc.js'
 // * ----------------------------------------
 export function watch() {
     // ! проверка на режим Tailwind
-    const isTailwind = env.cssMode === 'css'
+    const isTailwind = env.cssMode === 'tailwind'
 
     // * 1. если Tailwind, при изменении HTML/Nunjucks нужно пересобрать и HTML/Nunjucks + CSS (параллельно)
     const htmlWatcherTasks = isTailwind ? gulp.parallel(html, styles) : html
