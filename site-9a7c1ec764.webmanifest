@@ -1,0 +1,21 @@
+{
+    "name": "Simple Tailwind",
+    "short_name": "ST",
+    "icons": [
+        {
+            "src": "/web-app-manifest-192x192-fa1d49771a.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "/web-app-manifest-512x512-de2c73c3ea.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "standalone"
+}
