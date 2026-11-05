@@ -1,0 +1,21 @@
+/* TEAM */
+    Frontend Developer: Vladimir Nikulin
+    Contact: aleethey [at] gmail.com
+    GitHub: https://github.com/aLeeTheY
+    Telegram: @aLeeTheY
+    Twitter: @aLeeTheY
+    Location: Voronezh, Russia
+
+/* THANKS */
+    verstaem.online: For the design mockup and project (https://verstaem.online/layouts/simple).
+
+/* SITE */
+    Last update: 2026/11/05
+    Language: Russian
+    Copyright: (c) 2026 verstaem.online
+    License: MIT
+    Repository: https://github.com/aLeeTheY/Simple-Tailwind
+    Frontend: Nunjucks, Tailwind
+    Software: Visual Studio Code, Figma
+    Build Tools: Gulp, Node.js, Git
+    Testing & Quality: Playwright, Stylelint, ESLint, Prettier

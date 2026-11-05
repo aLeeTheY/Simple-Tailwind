@@ -1,0 +1,37 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  height="1000"
+  version="1.1"
+  width="1000">
+  <metadata>
+    <rdf:RDF
+      xmlns:dc="http://purl.org/dc/elements/1.1/"
+      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <rdf:Description>
+        <dc:creator>RealFaviconGenerator</dc:creator>
+        <dc:source>https://realfavicongenerator.net</dc:source>
+      </rdf:Description>
+    </rdf:RDF>
+  </metadata>
+  <g clip-path="url(#SvgjsClipPath1099)">
+    <rect fill="#ffffff" height="1000" width="1000" />
+    <g transform="matrix(43.75,0,0,43.75,150,150)">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        height="16"
+        viewBox="0 0 16 16"
+        width="16">
+        <path
+          d="M15.5 8C15.5 12.1421 12.1421 15.5 8 15.5C3.85786 15.5 0.5 12.1421 0.5 8C0.5 3.85786 3.85786 0.5 8 0.5C12.1421 0.5 15.5 3.85786 15.5 8Z"
+          stroke="#333333" />
+      </svg>
+    </g>
+  </g>
+  <defs>
+    <clipPath id="SvgjsClipPath1099">
+      <rect height="1000" rx="500" ry="500" width="1000" x="0" y="0" />
+    </clipPath>
+  </defs>
+</svg>
