@@ -35,23 +35,11 @@ import { replaceCssPaths } from '../../helpers/path-resolver.js'
 // * ---------------------------------------
 export function styles() {
     // * Формируем путь в зависимости от флагов окружения
-    let cssToAssets = '../assets/'
+    let cssToAssets = `${env.assetPrefix}assets/`
 
     if (env.isLocal) {
-        // В локальном режиме (file:///) используем строго относительные пути
-        if (env.isInlineCSS) {
-            // Если CSS встраивается в HTML: для языковых подпапок нужно подняться на уровень выше
-            cssToAssets = env.isI18N ? '../assets/' : './assets/'
-        } else {
-            // Внешний CSS лежит в dist/css/, до dist/assets/ всегда ровно один шаг назад
-            cssToAssets = '../assets/'
-        }
-    } else if (env.isInlineCSS && !env.assetPrefix) {
-        // Если инлайн-CSS используется без домена и без префикса
-        cssToAssets = env.isI18N ? '../assets/' : './assets/'
-    } else {
-        // В остальных режимах (dev, prod, gh-pages) берем абсолютный путь из env.js
-        cssToAssets = `${env.assetPrefix}assets/`
+        // * В локальном режиме внешний CSS всегда лежит в dist/css/, поэтому до ассетов один шаг назад
+        cssToAssets = '../assets/'
     }
 
     return (
@@ -99,14 +87,17 @@ export function styles() {
             )
 
             // * универсальная замена алиасов | @fonts, @images ... etc
-            .pipe(replaceCssPaths(cssToAssets))
+            .pipe(gulpIf(!env.isInlineCSS, replaceCssPaths(cssToAssets)))
 
             // ! спрайты не работают в css !!!
             .pipe(
-                gulpReplace(/@icons\/(.+?)\.svg/g, (match, p1) => {
-                    const id = p1.replace(/\//g, '--')
-                    return `${cssToAssets}icons/sprite.svg#${id}`
-                }),
+                gulpIf(
+                    !env.isInlineCSS,
+                    gulpReplace(/@icons\/(.+?)\.svg/g, (match, p1) => {
+                        const id = p1.replace(/\//g, '--')
+                        return `${cssToAssets}icons/sprite.svg#${id}`
+                    }),
+                ),
             )
 
             // * генерируем классы .avif и .webp для background-image

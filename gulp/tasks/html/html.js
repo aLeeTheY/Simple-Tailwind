@@ -5,7 +5,6 @@ import nodePath from 'path'
 import gulpIf from 'gulp-if'
 import through2 from 'through2'
 import { deleteAsync } from 'del'
-// import prettier from 'gulp-prettier'
 import browserSync from 'browser-sync'
 
 import { env } from '../../config/env.js'
@@ -48,12 +47,11 @@ import { replaceHtmlPaths } from '../../helpers/path-resolver.js'
 // * -----------------
 // const cacheVersion = `?v=${Date.now()}`
 
-// TODO: доделать <source> для video, audio
 function createHtmlStream({
     posthtmlPlugins = [],
     posthtmlOptions = {},
     baseWebsiteUrl,
-    i18n = {},
+    i18n = null,
     localeDataFromJSON = {},
     destPathByLocale,
     // * инлайн аргументы
@@ -61,6 +59,12 @@ function createHtmlStream({
     jsContent = '',
     spriteContent = '',
 }) {
+    if (!i18n || !i18n.current) {
+        throw new Error(
+            '[html.js]: i18n is required — check `languages.json` or `buildHtml` function',
+        )
+    }
+
     const ignoreCustomComments = [/Built with love by aLeeTheY/]
     if (!env.isInlineCSS) {
         ignoreCustomComments.push(/CRITICAL CSS PLACEHOLDER/)
@@ -158,6 +162,23 @@ function createHtmlStream({
                 }),
             )
 
+            // * вставка инлайн файлов, если включена
+            .pipe(
+                through2.obj(function (file, enc, callback) {
+                    let html = file.contents.toString('utf-8')
+                    html = inlineAssetsInHtml(html, {
+                        inlineCss: env.isInlineCSS,
+                        cssContent,
+                        inlineJs: env.isInlineJS,
+                        jsContent,
+                        inlineSprite: env.isInlineSprite,
+                        spriteContent,
+                    })
+                    file.contents = Buffer.from(html, 'utf-8')
+                    callback(null, file)
+                }),
+            )
+
             // * универсальная замена алиасов | @fonts, @images ... etc
             // ! пропускаем вызов, если isDjangoBuild = true
             .pipe(gulpIf(!env.isDjangoBuild, replaceHtmlPaths(pathPrefix)))
@@ -191,23 +212,6 @@ function createHtmlStream({
                         return `${pathPrefix}${p1}`
                     }),
                 ),
-            )
-
-            // * вставка инлайн файлов, если включена
-            .pipe(
-                through2.obj(function (file, enc, callback) {
-                    let html = file.contents.toString('utf-8')
-                    html = inlineAssetsInHtml(html, {
-                        inlineCss: env.isInlineCSS,
-                        cssContent,
-                        inlineJs: env.isInlineJS,
-                        jsContent,
-                        inlineSprite: env.isInlineSprite,
-                        spriteContent,
-                    })
-                    file.contents = Buffer.from(html, 'utf-8')
-                    callback(null, file)
-                }),
             )
 
             // * замена межстраничных ссылок @page/ -> '' или 'en/'
@@ -352,50 +356,32 @@ async function buildHtml() {
 
     // * --- LOCALES (I18N)
     // * ------------------
-    if (env.isI18N) {
-        const i18nConfig = JSON.parse(
-            fs.readFileSync(`${path.src.i18n.base}/languages.json`, 'utf-8'),
-        )
-        const { default_locale: defaultLocaleKey, available_locales: allAvailableLocales } =
-            i18nConfig
+    const i18nConfig = JSON.parse(fs.readFileSync(`${path.src.i18n.base}/languages.json`, 'utf-8'))
+    const { default_locale: defaultLocaleKey, available_locales: allAvailableLocales } = i18nConfig
 
-        for (const [localeKey, localeConfig] of Object.entries(allAvailableLocales)) {
-            const dataPath = `${path.src.i18n.base}/${localeKey}.json`
-            const localeDataFromJSON = JSON.parse(fs.readFileSync(dataPath, 'utf-8'))
+    for (const [localeKey, localeConfig] of Object.entries(allAvailableLocales)) {
+        const dataPath = `${path.src.i18n.base}/${localeKey}.json`
+        const localeDataFromJSON = JSON.parse(fs.readFileSync(dataPath, 'utf-8'))
 
-            // ! сегмент URL (например "" для дефолтного или "en" для английского)
-            const urlSegment = (localeConfig.url || '').trim().replace(/^\/|\/$/g, '')
-            const destPathByLocale = urlSegment ? nodePath.join(build.html, urlSegment) : build.html
+        // ! сегмент URL (например "" для дефолтного или "en" для английского)
+        const urlSegment = (localeConfig.url || '').trim().replace(/^\/|\/$/g, '')
+        const destPathByLocale = urlSegment ? nodePath.join(build.html, urlSegment) : build.html
 
-            // ? собираем единый объект i18n
-            const i18n = {
-                currentLocale: localeKey,
-                defaultLocale: defaultLocaleKey,
-                current: localeConfig,
-                locales: allAvailableLocales,
-            }
-
-            const stream = createHtmlStream({
-                posthtmlPlugins,
-                posthtmlOptions,
-                baseWebsiteUrl: env.siteUrl,
-                i18n,
-                localeDataFromJSON,
-                destPathByLocale,
-                cssContent,
-                jsContent,
-                spriteContent,
-            })
-
-            await new Promise((resolve, reject) => {
-                stream.on('end', resolve).on('error', reject)
-            })
+        // ? собираем единый объект i18n
+        const i18n = {
+            currentLocale: localeKey,
+            defaultLocale: defaultLocaleKey,
+            current: localeConfig,
+            locales: allAvailableLocales,
         }
-    } else {
+
         const stream = createHtmlStream({
             posthtmlPlugins,
             posthtmlOptions,
-            destPathByLocale: build.html,
+            baseWebsiteUrl: env.siteUrl,
+            i18n,
+            localeDataFromJSON,
+            destPathByLocale,
             cssContent,
             jsContent,
             spriteContent,

@@ -59,13 +59,13 @@ const argv = yargs(hideBin(process.argv))
         description:
             'Switches paths to strict relative links, satisfying standalone execution via `file:///`',
     })
-    // * Флаг internationalization
-    .option('internationalization', {
-        alias: ['i18n', 'I'],
-        type: 'boolean',
-        default: false,
-        description: 'Activates localized multi-lingual document compilation',
-    })
+    // // * Флаг internationalization
+    // .option('internationalization', {
+    //     alias: ['i18n', 'I'],
+    //     type: 'boolean',
+    //     default: false,
+    //     description: 'Activates localized multi-lingual document compilation',
+    // })
     // * Флаг css-mode
     .option('css-mode', {
         alias: ['cm'],
@@ -323,7 +323,7 @@ export const env = {
     isVerbose: argv.verbose,
     isForceClean: argv.forceClean,
     isLocal: isLocalFileMode,
-    isI18N: argv.internationalization,
+    // isI18N: argv.internationalization,
 
     cssMode: argv.cssMode,
     jsMode: argv.jsMode,
