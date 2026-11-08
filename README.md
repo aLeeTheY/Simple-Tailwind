@@ -95,8 +95,7 @@ The goal of this project is to develop a single-page responsive landing page for
 
 ### 🎨 Design <a id="design"></a>
 
-The visual part is based on the [**Simple**](https://verstaem.online/layouts/simple) layout provided by the [**verstaem.online**](https://verstaem.online/) platform.
-
+The visual part is based on the [**Simple**](https://verstaem.online/layouts/simple) layout provided by the [**verstaem.online**](https://verstaem.online/) platform.<br />
 The objective is to recreate the interface using **Tailwind CSS** and adapt it to various screen sizes.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -106,7 +105,7 @@ The objective is to recreate the interface using **Tailwind CSS** and adapt it t
 
 ### 🎬 Showcase <span id="showcase"></span>
 
-A video demonstration of the project is presented below (*click any image to open the live demo*):
+A video demonstration of the project is presented below (_click any image to open the live demo_):
 
 <div align="center">
 
@@ -130,8 +129,8 @@ A video demonstration of the project is presented below (*click any image to ope
 ### ✨ Key Features <span id="key-features"></span>
 
 - 🧩 **Tailwind CSS:** a modern approach to website styling using utility-first classes.
-- ⚡ **High Loading Speed:** critical CSS is inlined into the `<head>`, raster images are converted to AVIF/WebP, icons are compiled into an SVG sprite, and HTML/CSS are minified during the build process.
-- 💧 **Fluid Design:** fluid layout with smooth typography based on 4 breakpoints (implemented via `clamp()`): mobile → tablet → laptop → desktop.
+- ⚡ **High Loading Speed:** critical CSS is inlined into the <code encoded-by-transform-md="true">&lt;head&gt;</code>, raster images are converted to AVIF/WebP, icons are compiled into an SVG sprite, and HTML/CSS are minified during the build process.
+- 💧 **Fluid Design:** fluid layout with smooth typography based on 4 breakpoints (implemented via <code encoded-by-transform-md="true">clamp()</code>): mobile → tablet → laptop → desktop.
 
 #### ⚡ Google Lighthouse Benchmark <a id="google-lighthouse-benchmark"></a>
 
@@ -190,8 +189,8 @@ _For convenience, all information is divided into categories._
 <summary>📝 Code Style & Formatting</summary>
 
 - [![Husky][Husky-logo]][Husky-url] <sup>— client-side automatic Git hooks management</sup>
-  - [![lint-staged][LintStaged-logo]][LintStaged-url] <sup>— running linters and formatters on files before committing (`pre-commit`)</sup>
-  - [![Commitlint][CommitLint-logo]][CommitLint-url] <sup>— validation of Git messages according to the Conventional Commits specification (with custom `wip` and `deploy` types)</sup>
+  - [![lint-staged][LintStaged-logo]][LintStaged-url] <sup>— running linters and formatters on files before committing (<code encoded-by-transform-md="true">pre&#8209;commit</code>)</sup>
+  - [![Commitlint][CommitLint-logo]][CommitLint-url] <sup>— validation of Git messages according to the Conventional Commits specification (with custom <code encoded-by-transform-md="true">wip</code> and <code encoded-by-transform-md="true">deploy</code> types)</sup>
 - [![Browserslist][Browserslist-logo]][Browserslist-url] <sup>— declaring the list of target browsers and their minimum versions</sup>
 - [![EditorConfig][EditorConfig-logo]][EditorConfig-url] <sup>— code style applied to the IDE by default</sup>
 - [![ESLint][ESLint-logo]][ESLint-url] <sup>— linter for TypeScript and JavaScript sources (including configuration files)</sup>
@@ -528,7 +527,7 @@ npm run gh-pages
 
 ## 💡 Usage <span id="usage"></span>
 
-After completing the "[**Quick Start**](#quick-start)" step, the website will be available at `http://localhost:3000/`, and the built files will be located in the `dist/` directory.
+After completing the "[**Quick Start**](#quick-start)" step, the website will be available at <code encoded-by-transform-md="true">http://localhost:3000/</code>, and the built files will be located in the <code encoded-by-transform-md="true">dist/</code> directory.
 
 > [!NOTE]
 > The project can be used as a boilerplate for your own landing pages.
@@ -543,7 +542,7 @@ After completing the "[**Quick Start**](#quick-start)" step, the website will be
 
 ## 🧠 Development Challenges <span id="development-challenges"></span>
 
-- **Beasties integration:** [penthouse](https://github.com/pocketjoso/penthouse) and [puppeteer](https://github.com/puppeteer/puppeteer) do not support Tailwind CSS syntax, specifically the `@layer` constructs. Therefore, it was decided to rewrite the entire `critical-css.js` task to use the generator from the [Beasties](https://github.com/danielroe/beasties) library.
+- **Beasties integration:** [penthouse](https://github.com/pocketjoso/penthouse) and [puppeteer](https://github.com/puppeteer/puppeteer) do not support Tailwind CSS syntax, specifically the <code encoded-by-transform-md="true">@layer</code> constructs. Therefore, it was decided to rewrite the entire <code encoded-by-transform-md="true">critical&#8209;css.js</code> task to use the generator from the [Beasties](https://github.com/danielroe/beasties) library.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -552,7 +551,7 @@ After completing the "[**Quick Start**](#quick-start)" step, the website will be
 
 ## 📈 Key Skills <span id="key-skills"></span>
 
-- **Tailwind CSS:** Mastered the utility-first approach to UI styling. Mastered the `@layer` directive and the base layers in Tailwind CSS.
+- **Tailwind CSS:** Mastered the utility-first approach to UI styling. Mastered the <code encoded-by-transform-md="true">@layer</code> directive and the base layers in Tailwind CSS.
 - **Beasties Critical CSS:** Mastered the [Beasties](https://github.com/danielroe/beasties) library and configured it for critical CSS generation, replacing the outdated [penthouse](https://github.com/pocketjoso/penthouse).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -563,15 +562,15 @@ After completing the "[**Quick Start**](#quick-start)" step, the website will be
 ## 🗺️ Roadmap <span id="roadmap"></span>
 
 - [x] DOM development based on Nunjucks:
-  - [x] `<header>` section
-  - [x] `<footer>` section
-  - [x] `<main>` section
-  - [x] `<head>` section
+  - [x] <code encoded-by-transform-md="true">&lt;header&gt;</code> section
+  - [x] <code encoded-by-transform-md="true">&lt;footer&gt;</code> section
+  - [x] <code encoded-by-transform-md="true">&lt;main&gt;</code> section
+  - [x] <code encoded-by-transform-md="true">&lt;head&gt;</code> section
 - [x] Integration of the **Tailwind CSS** plugin into the PostCSS configuration
 - [x] Website styling and responsive design implementation (**Tablet** and **Desktop**) based on **Tailwind CSS** in accordance with the design layout and **Fluid Design** principles using the **Mobile First** approach
 - [x] Integration of the **Critical CSS** generator for the Gulp build based on the **Beasties** package
 - [x] Project build and deployment to GitHub Pages
-- [x] Preparation of technical documentation (`README.md`)
+- [x] Preparation of technical documentation (<code encoded-by-transform-md="true">README.md</code>)
 
 A full list of planned features and known issues is available in the [Issues][issues-url] section.
 
@@ -584,7 +583,7 @@ A full list of planned features and known issues is available in the [Issues][is
 
 Copyright © 2025–2026 [aLeeTheY](https://github.com/aLeeTheY)
 
-The project is distributed under the [**MIT**](https://mit-license.org/) license.<br />See the [`LICENSE`][license-url] file for more information.
+The project is distributed under the [**MIT**](https://mit-license.org/) license.<br />See the [<code encoded-by-transform-md="true">LICENSE</code>][license-url] file for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
