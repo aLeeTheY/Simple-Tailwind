@@ -1,0 +1,11 @@
+{
+    'src/**/*.{js,mjs,cjs,ts,mts,cts}':
+        [
+            'npx eslint --no-error-on-unmatched-pattern --no-warn-ignored --max-warnings=0 --fix',
+            'npx prettier --write',
+        ],
+    'src/**/*.{scss,css}':
+        ['npx stylelint --allow-empty-input --max-warnings=0 --fix', 'npx prettier --write'],
+    '*.md': ['npx prettier --write', 'npx tsx docs/utils/transform-md.ts encode'],
+    '!(*.{js,mjs,cjs,ts,mts,cts}|*.{scss,css}|*.md)': 'npx prettier --ignore-unknown --write',
+}

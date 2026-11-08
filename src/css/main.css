@@ -1,0 +1,14 @@
+/* stylelint-disable scss/at-rule-no-unknown */
+/* stylelint-disable no-invalid-position-at-import-rule */
+
+/* ! --- VENDORS IMPORT */
+@import 'tailwindcss';
+
+/* ! --- TAILWIND PLUGINS */
+@plugin 'tailwindcss-grid-template-areas/plugin.js';
+
+/* ! --- TAILWIND CONFIG */
+@import '@css/layers/theme.css';
+@import '@css/layers/base.css' layer(base);
+@import '@css/layers/components.css' layer(components);
+@import '@css/layers/utilities.css';

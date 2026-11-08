@@ -1,0 +1,187 @@
+<header id="header" class="flex flex-col border-b-0 border-b-[#ddd] desktop:border-b" data-beasties-container>
+    <!-- * desktop var --->
+    <div class="wrapper flex justify-center items-center py-11 tablet:justify-between desktop:py-29">
+        <a class="logo" href="#back-to-top">
+            <svg width="140" height="22" aria-hidden="true">
+                <use href="@icons/logo/logo.svg"></use>
+                <span class="sr-only">Логотип компании</span>
+            </svg>
+        </a>
+
+        <nav class="flex gap-x-60 items-center">
+            <ul class="hidden desktop:flex desktop:gap-x-60 desktop:items-center">
+                <li><a class="nav-menu__link" href="#!">Продукция</a></li>
+                <li><a class="nav-menu__link" href="#!">Материалы</a></li>
+                <li><a class="nav-menu__link" href="#!">О нас</a></li>
+                <li><a class="nav-menu__link" href="#!">Контакты</a></li>
+            </ul>
+
+            <div class="flex gap-x-30 items-center">
+                <!-- * скрытый checkbox для раскрытия поиска  --->
+                <input id="search-toggle" class="peer hidden tablet:block tablet:sr-only" type="checkbox" />
+
+                <!-- * search form --->
+                <form
+                    id="search-form"
+                    class="hidden tablet:flex items-center justify-between gap-x-8"
+                    action=""
+                    method="get"
+                    enctype="application/x-www-form-urlencoded"
+                    target="_blank"
+                    autocomplete="on">
+                    <label for="search-toggle" class="search-form__search-btn cursor-pointer">
+                        <svg width="24" height="24" aria-hidden="true">
+                            <use href="@icons/form/search-form__search-btn.svg"></use>
+                            <span class="sr-only">Поиск</span>
+                        </svg>
+                    </label>
+
+                    <!-- * old search btn --->
+                    <!-- <button id="sf-search-btn" class="search-form__search-btn" type="submit">
+                        <svg width="24" height="24" aria-hidden="true">
+                            <use href="@icons/form/search-form__search-btn.svg"></use>
+                            <span class="sr-only">Поиск</span>
+                        </svg>
+                    </button> -->
+
+                    <div class="search-form__search-field-wrapper">
+                        <input
+                            name="search_data"
+                            id="sf-input-field"
+                            class="search-form__input-field"
+                            type="search"
+                            inputmode="search"
+                            enterkeyhint="search"
+                            autocomplete="on"
+                            placeholder="Найти"
+                            required />
+
+                        <button id="sf-close-btn" class="search-form__close-btn" type="reset">
+                            <svg width="6" height="6" aria-hidden="true">
+                                <use href="@icons/form/search-form__close-btn.svg"></use>
+                                <span class="sr-only">Очистить строку поиска</span>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <button id="sf-search-btn" type="submit" class="sr-only">Поиск</button>
+                </form>
+
+                <!-- * login btn --->
+                <a class="nav-menu__link--with-icon hidden tablet:block" href="#!">
+                    <svg width="24" height="24" aria-hidden="true">
+                        <use href="@icons/menu/login.svg"></use>
+                        <span class="sr-only">Авторизация</span>
+                    </svg>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="wrapper flex justify-between items-center py-17 laptop:py-19 border-y border-y-[#ddd] desktop:hidden">
+        <nav class="w-full isolate flex justify-between items-center tablet:hidden">
+            <a class="nav-menu__link--with-icon" href="#open-menu">
+                <svg width="30" height="30" aria-hidden="true">
+                    <use href="@icons/menu/hamburger_menu.svg"></use>
+                    <span class="sr-only">Открыть меню</span>
+                </svg>
+            </a>
+
+            <div class="flex gap-x-30 items-center">
+                <!-- * скрытый checkbox для раскрытия поиска  --->
+                <input id="search-toggle-mobile" class="peer sr-only tablet:hidden" type="checkbox" />
+
+                <!-- * search form --->
+                <form
+                    id="search-form-mobile"
+                    class="flex items-center justify-between gap-x-8"
+                    action=""
+                    method="get"
+                    enctype="application/x-www-form-urlencoded"
+                    target="_blank"
+                    autocomplete="on">
+                    <label for="search-toggle-mobile" class="search-form__search-btn cursor-pointer">
+                        <svg width="24" height="24" aria-hidden="true">
+                            <use href="@icons/form/search-form__search-btn.svg"></use>
+                            <span class="sr-only">Поиск</span>
+                        </svg>
+                    </label>
+
+                    <!-- * old search btn --->
+                    <!-- <button id="sf-search-btn-mobile" class="search-form__search-btn" type="submit">
+                        <svg width="24" height="24" aria-hidden="true">
+                            <use href="@icons/form/search-form__search-btn.svg"></use>
+                            <span class="sr-only">Поиск</span>
+                        </svg>
+                    </button> -->
+
+                    <div class="search-form__search-field-wrapper">
+                        <input
+                            name="search_data"
+                            id="sf-input-field-mobile"
+                            class="search-form__input-field"
+                            type="search"
+                            inputmode="search"
+                            enterkeyhint="search"
+                            autocomplete="on"
+                            placeholder="Найти"
+                            required />
+
+                        <button id="sf-close-btn-mobile" class="search-form__close-btn" type="reset">
+                            <svg width="6" height="6" aria-hidden="true">
+                                <use href="@icons/form/search-form__close-btn.svg"></use>
+                                <span class="sr-only">Очистить строку поиска</span>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <button id="sf-search-btn-mobile" type="submit" class="sr-only">Поиск</button>
+                </form>
+
+                <!-- * login btn --->
+                <a class="nav-menu__link--with-icon" href="#!">
+                    <svg width="24" height="24" aria-hidden="true">
+                        <use href="@icons/menu/login.svg"></use>
+                        <span class="sr-only">Авторизация</span>
+                    </svg>
+                </a>
+            </div>
+
+            <div id="open-menu" class="nav-menu__hidden-menu">
+                <div class="flex justify-center items-center py-11 bg-white">
+                    <a class="logo" href="#back-to-top">
+                        <svg width="140" height="22" aria-hidden="true">
+                            <use href="@icons/logo/logo.svg"></use>
+                            <span class="sr-only">Наверх</span>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="flex flex-col items-start p-15 gap-y-22">
+                    <a class="nav-menu__link--with-icon" href="#!">
+                        <svg width="30" height="30" aria-hidden="true">
+                            <use href="@icons/menu/close.svg"></use>
+                            <span class="sr-only">Закрыть меню</span>
+                        </svg>
+                    </a>
+
+                    <ul class="flex flex-col gap-y-50">
+                        <li><a class="nav-menu__link text-lg" href="#!">Продукция</a></li>
+                        <li><a class="nav-menu__link text-lg" href="#!">Материалы</a></li>
+                        <li><a class="nav-menu__link text-lg" href="#!">О нас</a></li>
+                        <li><a class="nav-menu__link text-lg" href="#!">Контакты</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <nav class="w-full hidden tablet:block">
+            <ul class="flex gap-x-50 items-center justify-between">
+                <li><a class="nav-menu__link" href="#!">Продукция</a></li>
+                <li><a class="nav-menu__link" href="#!">Материалы</a></li>
+                <li><a class="nav-menu__link" href="#!">О нас</a></li>
+                <li><a class="nav-menu__link" href="#!">Контакты</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>

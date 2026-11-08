@@ -1,0 +1,64 @@
+# Default | For all text files
+* text eol=lf
+
+# Source Files | Design Files (Figma + Adobe Photoshop)
+*.fig binary
+*.psd binary
+*.psb binary
+
+# Images | Raster Images
+*.gif binary
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+
+*.ico binary
+
+# Images | Vector Images
+*.svg text eol=lf
+
+# Media | Audio & Video
+*.mp3 binary
+*.mp4 binary
+*.webm binary
+
+*.mov binary
+*.avi binary
+*.mkv binary
+*.flv binary
+*.m4v binary
+
+# Fonts
+*.eot binary
+*.otf binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
+
+# Docs
+*.pdf binary
+
+# Archives
+*.zip binary
+*.rar binary
+*.7z binary
+*.tar binary
+*.tar.gz binary
+*.gz binary
+*.tgz binary
+
+# 3D
+*.glb binary
+
+# gettext binary files
+*.mo binary
+
+# Map files
+*.map binary
+
+# ! --- GITHUB LINGUIST SETTINGS
+# ! ----------------------------
+deploy/templates/docker-gen/** linguist-vendored

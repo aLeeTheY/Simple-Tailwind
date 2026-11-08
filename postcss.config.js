@@ -1,0 +1,212 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
+
+const isProd = process.env.NODE_ENV === 'production'
+
+export default (ctx) => {
+    // ! единая точка чтения опций из gulp
+    const ctxOptions = ctx.options?.config?.ctx || {}
+
+    const cssMode = ctxOptions.cssMode || 'scss'
+    const isMobileFirst = ctxOptions.isMobileFirst || false
+
+    // ! пути для PurgeCSS — приходят из gulp, потому что в Django и prod
+    // ! билды они разные. Fallback — дефолт для обычной сборки.
+    const purgePaths = ctxOptions.purgePaths || [
+        'dist/**/*.html',
+        'dist/libs/**/*.js',
+        'dist/js/**/*.js',
+    ]
+
+    return {
+        plugins: {
+            // // ! склеиваем все @import в один файл
+            // 'postcss-import': {},
+
+            // * замена px на rem в зависимости от условий
+            // ! default config
+            // 'postcss-pxtorem': {
+            //     rootValue: 16,
+            //     unitPrecision: 5,
+            //     propList: ['font', 'font-size', 'line-height', 'letter-spacing', 'word-spacing'],
+            //     selectorBlackList: [],
+            //     replace: true,
+            //     mediaQuery: false,
+            //     minPixelValue: 0,
+            //     exclude: /node_modules/i,
+            // },
+            // ! temp disable
+            // 'postcss-pxtorem': {
+            //     rootValue: 16,
+            //     unitPrecision: 5,
+            //     propList: [
+            //         'font',
+            //         'font-size',
+            //         'line-height',
+            //         'letter-spacing',
+            //         'word-spacing',
+            //         'margin',
+            //         'margin-*',
+            //         'padding',
+            //         'padding-*',
+            //     ],
+            //     selectorBlackList: ['html'],
+            //     replace: true,
+            //     mediaQuery: false,
+            //     minPixelValue: 3,
+            //     exclude: /node_modules/i,
+            // },
+            // ! pxToRem --- ALL | Ломает border-radius Tailwind'а !!!
+            'postcss-pxtorem': {
+                rootValue: 16,
+                unitPrecision: 5,
+                propList: ['*', '!border*'],
+                selectorBlackList: ['html'],
+                replace: true,
+                mediaQuery: false,
+                minPixelValue: 2,
+                exclude: /node_modules/i,
+            },
+            // * замена clamp на комбинации min + max (old plugin)
+            // 'postcss-clamp': {
+            //     precalculate: true,
+            // },
+            // * округлить пиксельные значения до целых чисел
+            // ! отключать для Fluid Design !!!
+            // 'postcss-round-subpixels': {},
+            // * fallback для font-variant (совместимость)
+            'postcss-font-variant': {},
+            // * автоматическое добавление font-display: swap для внешних локальных шрифтов (only works in @font-face)
+            'postcss-font-display': {
+                display: 'swap',
+                replace: false,
+            },
+            // * css-hack для создания fallback для will-change у браузеров, которые не поддерживают will-change
+            'postcss-will-change': {},
+            // * preset-env + autoprefixer
+            'postcss-preset-env': {
+                // default value
+                stage: 2,
+
+                // more stable for production mode
+                // stage: env === "production" ? 4 : 2,
+
+                // disabled
+                // autoprefixer: { grid: true },
+            },
+            ...(isProd && {
+                // * rename переменных css (более короткие)
+                'postcss-rename/variable': {
+                    strategy: 'minimal',
+                    by: 'whole',
+                    ids: false,
+                    except: [
+                        // * Все переменные Tailwind
+                        /^--tw-/,
+                        /^--\*:/,
+                        /^--color-/,
+                        /^--font-/,
+                        /^--text-/,
+                        /^--font-weight-/,
+                        /^--tracking-/,
+                        /^--leading-/,
+                        /^--tab-size-/,
+                        /^--breakpoint-/,
+                        /^--container-/,
+                        /^--spacing-/,
+                        /^--radius-/,
+                        /^--shadow-/,
+                        /^--inset-shadow-/,
+                        /^--drop-shadow-/,
+                        /^--blur-/,
+                        /^--perspective-/,
+                        /^--zoom-/,
+                        /^--aspect-/,
+                        /^--ease-/,
+                        /^--animate-/,
+                        /^--default-/, // Дефолтные значения
+
+                        // * Всё остальное
+                        'dont-touch-me',
+                    ],
+                    outputMapCallback: false,
+                },
+                // ! disabled
+                // * rename имён классов css (более короткие)
+                // 'postcss-rename': {
+                //     strategy: 'minimal',
+                //     by: 'whole',
+                //     ids: false,
+                //     except: ['.dont-touch-me'],
+                //     outputMapCallback: false,
+                // },
+            }),
+            // ! функционал уже есть в cssnano (discardDuplicates)
+            // * слияние идентичных селекторов (убираем дубликаты)
+            // 'postcss-combine-duplicated-selectors': { removeDuplicatedValues: false },
+            // * группировка медиазапросов в конец CSS файла
+            // ! отключено | иногда ломает специфичность модификаторов !!!
+            // 'postcss-sort-media-queries': {
+            //     sort: isMobileFirst ? 'mobile-first' : 'desktop-first',
+            // },
+            // TODO: доделать webp-in-css и протестить
+            // 'webp-in-css/plugin': {
+            //     webpClass: 'webp',
+            //     noWebpClass: 'no-webp',
+            // },
+            // ! не подходит
+            // * обфускация CSS, замена имён классов упрощёными именами (только в staging/prod)
+            // ...(isProd && {
+            //     'postcss-obfuscator': {
+            //         enable: true,
+            //         length: 2,
+            //         classMethod: 'random',
+            //         ids: false,
+            //         idMethod: 'random',
+            //         jsonsPath: './dist/css/obfuscator',
+            //         srcPath: './dist/css',
+            //         fresh: false,
+            //         multi: false,
+            //     },
+            // }),
+            // * удаление неиспользуемых CSS (только в staging/prod + SCSS)
+            ...(isProd &&
+                cssMode === 'scss' && {
+                    '@fullhuman/postcss-purgecss': {
+                        content: purgePaths,
+
+                        // ! Объясняем PurgeCSS, что двоеточия (md:flex), слэши (w-1/2) и скобки (w-[350px]) — это часть класса, а не разделители слов.
+                        defaultExtractor: (content) =>
+                            content.match(/[^<>"'`\s]*[^<>"'`\s:]/g) || [],
+
+                        // ! Защитит .page--ru, .page--en, .page--fr и т.д.
+                        // ! safelist: [/--[a-z]{2}$/],
+                        safelist: {
+                            // * начинается с my- / is- / has- или заканчивается на --ru/--en + Tailwind
+                            standard: [/--ru$/, /--en$/, /^is-/, /^has-/, /^--tw-/],
+
+                            // * атрибутные селекторы [type=...], [name=...]
+                            deep: [/\[type=/, /\[name=/, /\[id=/],
+
+                            // * не вырезать мои собственные классы
+                            greedy: [/my-/],
+                        },
+                    },
+                }),
+            // * сжатие CSS (только в prod и staging modes)
+            ...(isProd && {
+                cssnano: {
+                    // preset: "default",
+                    preset: [
+                        'advanced',
+                        {
+                            // * отключаем склейку правил
+                            // mergeRules: false,
+                            // minifySelectors: false,
+                        },
+                    ],
+                },
+            }),
+        },
+    }
+}

@@ -1,0 +1,340 @@
+/* stylelint-disable rule-empty-line-before */
+
+@layer components {
+    /* * Tailwind "@layer components" styles */
+
+    /* ! --- HEADER
+       ! ---------- */
+    .logo {
+        @apply block text-[#333333];
+
+        & svg {
+            @apply text-inherit;
+        }
+    }
+
+    .nav-menu__link {
+        /* * default */
+        @apply relative isolate text-xl text-[#4C5866] text-nowrap transition-colors duration-300;
+
+        &::before {
+            @apply content-[''] absolute inset-0 -mx-5 -z-10 bg-transparent transition-colors duration-300;
+        }
+
+        /* ! LVFHA pseudo-class order REQUIRED !!! */
+        /* * focus */
+        @apply focus-visible:outline-none focus-visible:text-[#4C5866];
+
+        &:focus-visible::before {
+            @apply bg-[#DAD9FB];
+        }
+
+        /* * hover */
+        @apply hover:text-[#7875FE];
+
+        /* * active */
+        @apply active:text-[#4946B4];
+    }
+
+    .nav-menu__link--with-icon {
+        /* * default */
+        @apply aspect-square max-w-24 max-h-24 relative isolate text-xl text-[#4C5866] transition-colors duration-300;
+
+        &::before {
+            @apply content-[''] absolute inset-0 -z-10 bg-transparent transition-colors duration-300;
+        }
+
+        & svg {
+            @apply text-inherit;
+        }
+
+        /* ! LVFHA pseudo-class order REQUIRED !!! */
+        /* * focus */
+        @apply focus-visible:outline-none focus-visible:text-[#7875FE];
+        &:focus-visible::before {
+            @apply bg-[#DAD9FB];
+        }
+
+        /* * hover */
+        @apply hover:text-[#7875FE];
+
+        /* * active */
+        @apply active:text-[#4946B4];
+    }
+
+    .nav-menu__hidden-menu {
+        @apply fixed inset-0 bg-[#EBEBEB] will-change-transform transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] -translate-x-full z-10 flex flex-col;
+
+        &:target {
+            @apply -translate-x-0;
+        }
+    }
+
+    /* ! --- HEADER SEARCH FORM
+       ! ---------------------- */
+    .search-form__search-btn {
+        @apply size-24 flex items-center justify-center bg-transparent text-[#4C5866] transition-colors duration-300 outline-none;
+
+        & svg {
+            @apply w-full h-full text-inherit;
+        }
+
+        /* ! LVFHA pseudo-class order REQUIRED !!! */
+        /* * focus */
+        @apply focus-visible:bg-[#DAD9FB];
+
+        /* * hover */
+        @apply hover:text-[#7875FE];
+
+        /* * active */
+        @apply active:text-[#4946B4];
+    }
+
+    .search-form__search-field-wrapper {
+        @apply max-w-0 flex items-center justify-between gap-x-4 pb-2 border-b border-[#D1D1E5] overflow-hidden transition-[max-width] duration-300;
+    }
+
+    #search-toggle:focus-visible ~ #search-form .search-form__search-btn,
+    #search-toggle-mobile:focus-visible ~ #search-form-mobile .search-form__search-btn {
+        @apply text-[#7875FE] bg-[#DAD9FB];
+    }
+
+    #search-toggle:checked ~ #search-form .search-form__search-field-wrapper,
+    #search-toggle-mobile:checked ~ #search-form-mobile .search-form__search-field-wrapper {
+        @apply max-w-[clamp(130px,0.3725*100vw+10.4118px,225px)];
+        @apply tablet:max-w-225;
+    }
+
+    .search-form__input-field {
+        @apply w-full text-left text-xl text-[#4C5866] leading-[100%] appearance-none outline-none;
+
+        &::placeholder {
+            @apply text-[#D1D1E5];
+        }
+
+        &::-webkit-search-cancel-button {
+            @apply hidden appearance-none;
+        }
+    }
+
+    .search-form__close-btn {
+        @apply aspect-square min-w-20 flex items-center justify-center p-5 border-[1px] rounded-full border-transparent bg-[#D1D1E5] text-[#4C5866] transition-colors duration-300 outline-none;
+
+        & svg {
+            @apply w-full h-full text-inherit;
+        }
+
+        /* ! LVFHA pseudo-class order REQUIRED !!! */
+        /* * focus */
+        @apply focus-visible:border-[#7875FE];
+
+        /* * hover */
+        @apply hover:text-white hover:bg-[#7875FE];
+
+        /* * active */
+        @apply active:text-white active:border-transparent active:bg-[#4946B4];
+    }
+
+    /* ! --- TYPOGRAPHY
+       ! -------------- */
+    h1 {
+        @apply text-left text-[#4C5866] text-[clamp(30px,0.0314*100vw+19.9294px,38px)] leading-[100%];
+        @apply tablet:text-[clamp(38px,0.0628*100vw+1.7487px,50px)];
+        @apply laptop:text-[clamp(50px,0.0149*100vw+38.5395px,60px)];
+        @apply desktop:text-6xl;
+    }
+
+    h2 {
+        @apply text-left text-[clamp(24px,0.0134*100vw+19.6913px,30px)] text-[#666666] leading-[100%];
+        @apply laptop:text-[clamp(30px,0.0149*100vw+18.5395px,40px)];
+        @apply desktop:text-[40px];
+    }
+
+    h3 {
+        @apply text-left text-2xl text-[#666666] leading-[116%];
+        @apply tablet:text-[clamp(24px,0.0314*100vw+5.8743px,30px)];
+        @apply laptop:text-3xl;
+    }
+
+    h4 {
+        @apply text-[clamp(16px,0.0105*100vw+9.9581px,18px)] text-[#666666] leading-[150%] font-medium;
+        @apply laptop:text-lg;
+    }
+
+    h5 {
+        @apply text-left text-sm text-[#B5B5BD] leading-[115%];
+    }
+
+    .paragraph {
+        @apply text-left text-[#85859B] text-[clamp(16px,0.0045*100vw+14.5638px,18px)] leading-[170%];
+        @apply laptop:text-lg;
+
+        &.paragraph--hero {
+            @apply text-[clamp(14px,0.0078*100vw+11.4824px,16px)] leading-[150%];
+            @apply tablet:text-[clamp(16px,0.0105*100vw+9.9581px,18px)];
+            @apply laptop:text-lg;
+        }
+
+        &.paragraph--paper-variant {
+            @apply text-base leading-[150%];
+            @apply tablet:text-[clamp(16px,0.0105*100vw+9.9581px,18px)];
+            @apply laptop:text-lg;
+        }
+    }
+
+    /* ! --- HERO
+       ! -------- */
+    .link-as-button {
+        /* * default */
+        @apply grid place-items-center w-[clamp(144px,0.2039*100vw+78.5412px,196px)] h-[clamp(50px,0.0392*100vw+37.4118px,60px)] text-center text-[clamp(18px,0.0078*100vw+15.4824px,20px)] leading-[100%] tracking-normal text-[#7875FE] border border-[#7875FE] bg-transparent transition-colors duration-300 outline-none;
+        @apply tablet:w-[clamp(196px,0.3089*100vw+17.7644px,255px)] tablet:h-[clamp(60px,0.0524*100vw+29.7906px,70px)] text-xl;
+        @apply laptop:w-255 laptop:h-70;
+
+        /* ! LVFHA pseudo-class order REQUIRED !!! */
+        /* * focus */
+        @apply focus-visible:bg-[#DAD9FB];
+
+        /* * hover */
+        @apply hover:text-white hover:bg-[#7875FE];
+
+        /* * active */
+        @apply active:text-white active:border-[#4946B4] active:bg-[#4946B4];
+    }
+
+    .hero-img {
+        @apply hidden overflow-hidden w-full;
+        @apply tablet:block tablet:mt-[clamp(20px,0.2094*100vw-100.8377px,60px)] tablet:max-h-[clamp(396px,0.0733*100vw+353.7068px,410px)];
+        @apply laptop:max-h-[clamp(410px,0.2235*100vw+238.0924px,560px)];
+        @apply desktop:max-h-560;
+
+        & img {
+            @apply w-full h-full object-cover object-top;
+        }
+    }
+
+    /* ! --- PAPER SHOWCASE SECTION
+       ! -------------------------- */
+    .my-paper-showcase__main-container {
+        @apply py-60 flex flex-col;
+        @apply laptop:grid laptop:grid-rows-[auto_1fr] laptop:grid-cols-[auto_1fr] laptop:gap-y-[clamp(40px,0.0745*100vw-17.3025px,90px)] laptop:gap-x-30 laptop:py-[clamp(60px,0.0447*100vw+25.6185px,90px)];
+        @apply desktop:gap-y-90 desktop:py-90;
+    }
+
+    .paper-variant-container {
+        @apply grid grid-areas-[variant-img,variant-text] place-items-center gap-x-30 pt-20 border-t border-t-[#C0C0C0];
+        @apply tablet:grid-areas-[variant-img|variant-text] tablet:gap-y-20;
+        @apply desktop:grid-areas-[variant-img,variant-text];
+
+        & paper-variant-container__img {
+            @apply grid-in-[variant-img] object-contain;
+            @apply tablet:pr-[clamp(0px,0.2618*100vw-151.0471px,50px)];
+            @apply laptop:pr-[clamp(0px,-0.4348*100vw+384.3478px,50px)];
+            @apply desktop:pr-0;
+        }
+    }
+
+    /* ! --- ASSORTMENT SECTION
+       ! ---------------------- */
+    .product-link {
+        /* * default */
+        @apply relative isolate max-w-min flex flex-nowrap items-center gap-x-5 text-[#7875FE] outline-none;
+
+        &::before {
+            @apply content-[''] absolute -inset-4 -z-10 bg-transparent origin-left will-change-transform transition-all duration-300;
+        }
+
+        & span {
+            @apply text-xl leading-[115%];
+        }
+
+        & div {
+            @apply relative isolate w-21 h-15;
+
+            &::before {
+                @apply content-[''] absolute -z-10 left-0 top-1/2 -translate-y-1/2 w-20 h-2 rounded-full bg-current transition-[width] duration-300;
+            }
+
+            svg {
+                @apply absolute z-10 right-0 top-1/2 -translate-y-1/2 overflow-visible will-change-transform transition-transform duration-300;
+            }
+        }
+
+        /* ! LVFHA pseudo-class order REQUIRED !!! */
+        /* * focus */
+        &:focus-visible::before {
+            @apply bg-[#DAD9FB];
+        }
+
+        /* * hover */
+        @apply hover:text-[#4946B4];
+
+        /* * active */
+        @apply active:text-[#4946B4];
+        &:active {
+            div {
+                &::before {
+                    @apply w-27;
+                }
+
+                svg {
+                    @apply translate-x-7;
+                }
+            }
+        }
+        &:active:focus-visible::before {
+            /* * 100% + 7px */
+            @apply scale-x-[1.05097];
+        }
+    }
+
+    /* ! --- PARTNERS SECTION
+       ! -------------------- */
+    .company-card {
+        @apply grid max-h-80 aspect-255/135 px-20 py-24 place-items-center outline outline-offset-0 outline-[#C4C4C4] bg-transparent transition-colors duration-300;
+        @apply tablet:max-h-none tablet:px-32 tablet:py-38;
+        @apply laptop:px-[clamp(20px,0.0224*100vw+2.8092px,35px)] laptop:py-[clamp(24px,0.0238*100vw+5.6632px,40px)];
+        /* @apply desktop:px-35 desktop:py-40; */
+
+        & svg {
+            @apply w-full h-auto;
+        }
+
+        /* ! LVFHA pseudo-class order REQUIRED !!! */
+        /* * focus */
+        @apply focus-visible:bg-[#DAD9FB] focus-visible:outline-[#7875FE];
+
+        /* * hover */
+        @apply hover:bg-[#DEDEDE];
+
+        /* * active */
+        @apply active:bg-[#C4C4C4];
+    }
+
+    /* ! --- FOOTER
+       ! ---------- */
+    .footer-nav-menu__icon-link {
+        /* * default */
+        @apply relative isolate text-white transition-colors duration-300;
+
+        &::before {
+            @apply content-[''] absolute inset-0 -z-10 bg-transparent transition-colors duration-300 rounded-[2px];
+        }
+
+        & svg {
+            @apply text-inherit;
+        }
+
+        /* ! LVFHA pseudo-class order REQUIRED !!! */
+        /* * focus */
+        @apply focus-visible:outline-none focus-visible:text-white;
+        &:focus-visible::before {
+            @apply bg-[#7875FE];
+        }
+
+        /* * hover */
+        @apply hover:text-[#DAD9FB];
+
+        /* * active */
+        @apply active:text-[#7875FE];
+    }
+}

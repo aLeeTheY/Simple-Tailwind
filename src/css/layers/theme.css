@@ -1,0 +1,19 @@
+/* stylelint-disable no-invalid-position-declaration */
+/* stylelint-disable custom-property-empty-line-before */
+
+@layer theme {
+    /* * basic CSS-variables for Tailwind project */
+}
+
+@theme {
+    /* * Tailwind CSS-variables with reserved prefixes | Will be generated to classes */
+
+    --font-sans: 'Roboto', sans-serif;
+    --spacing: 1px;
+
+    --breakpoint-*: initial;
+    --breakpoint-mobile: 320px;
+    --breakpoint-tablet: 576px;
+    --breakpoint-laptop: 768px;
+    --breakpoint-desktop: 1440px;
+}
