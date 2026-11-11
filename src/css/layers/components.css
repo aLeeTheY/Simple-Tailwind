@@ -237,7 +237,7 @@
        ! ---------------------- */
     .product-link {
         /* * default */
-        @apply relative isolate max-w-min flex flex-nowrap items-center gap-x-5 text-[#7875FE] outline-none;
+        @apply relative isolate max-w-min flex flex-nowrap items-center gap-x-5 text-[#7875FE] outline-none transition-colors duration-300;
 
         &::before {
             @apply content-[''] absolute -inset-4 -z-10 bg-transparent origin-left will-change-transform transition-all duration-300;
